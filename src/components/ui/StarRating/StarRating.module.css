@@ -1,0 +1,39 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  color: #d1d5db;
+  line-height: 1;
+}
+
+.star:hover,
+.starFilled {
+  color: #f0a500;
+}
+
+.star:active {
+  transform: scale(0.9);
+}
+
+.readonly {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Sizes */
+.sm .star {
+  font-size: 14px;
+}
+
+.md .star {
+  font-size: 18px;
+}
+
+.lg .star {
+  font-size: 24px;
+}
