@@ -1,55 +1,68 @@
-import bcrypt from 'bcryptjs';
-import NextAuth from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
+import { cookies } from 'next/headers';
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from './prisma';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    Credentials({
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+export interface SessionUser {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  image?: string | null;
+}
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+export async function getSession(): Promise<SessionUser | null> {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get('session');
 
-        if (!user || !user.password) return null;
+    if (!sessionCookie) {
+      return null;
+    }
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
+    let sessionData;
+    try {
+      sessionData = JSON.parse(sessionCookie.value);
+    } catch {
+      // Cookie rusak, hapus
+      cookieStore.set('session', '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 0,
+        path: '/',
+      });
+      return null;
+    }
 
-        if (!isValid) return null;
+    // Verifikasi user masih ada di database
+    const user = await prisma.user.findUnique({
+      where: { id: sessionData.id },
+    });
 
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        };
-      },
-    }),
-  ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) token.role = (user as { role: string }).role;
-      return token;
-    },
-    session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub ?? '';
-        (session.user as { role: string }).role = token.role as string;
-      }
-      return session;
-    },
-  },
-  pages: {
-    signIn: '/login',
-  },
-});
+    if (!user) {
+      // User udah dihapus dari DB, hapus cookie
+      cookieStore.set('session', '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 0,
+        path: '/',
+      });
+      return null;
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      image: user.image,
+    };
+  } catch (error) {
+    console.error('Get session error:', error);
+    return null;
+  }
+}
+
+// Alias untuk konsistensi
+export const auth = getSession;

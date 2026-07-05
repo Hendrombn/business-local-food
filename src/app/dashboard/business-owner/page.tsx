@@ -1,1 +1,0 @@
-// lihat bisnis milik owner

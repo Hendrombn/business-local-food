@@ -1,73 +1,112 @@
 'use client';
 
+import {
+  Home,
+  Heart,
+  User,
+  Search,
+  LayoutDashboard,
+  LogOut,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import LogoutButton from '@/components/auth/index';
+import SearchBar from '@/components/business/SeachBar';
 import Avatar from '@/components/ui/Avatar';
-import Button from '@/components/ui/Button';
+import { useSession } from '@/hooks/useSession';
 
-import { NAV_ITEMS } from './Navbar.constants';
 import styles from './Navbar.module.css';
-
-const MOCK_USER = {
-  name: 'Budi Santoso',
-  role: 'Owner',
-  isLoggedIn: true,
-};
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user, loading } = useSession();
+
+  const navItems = [
+    { href: '/', label: 'Home', icon: Home },
+    { href: '/explore', label: 'Explore', icon: Search },
+    { href: '/saved', label: 'Favorit', icon: Heart },
+  ];
+
+  // Tambahkan dashboard link hanya untuk OWNER atau ADMIN
+  const showDashboard =
+    user && (user.role === 'OWNER' || user.role === 'ADMIN');
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname?.startsWith(href) ?? false;
+  };
+
+  const handleSearch = (query: string) => {
+    console.log('Search:', query);
+  };
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.inner}>
-        {/* Logo */}
         <Link href="/" className={styles.logo}>
           <span className={styles.logoIcon}>🍴</span>
           <span className={styles.logoText}>Kuliner Lokal</span>
         </Link>
 
-        {/* Nav Items */}
+        {/* Search Bar - Desktop */}
+        <div className={styles.searchWrapper}>
+          <SearchBar onSearch={handleSearch} />
+        </div>
+
         <div className={styles.nav}>
-          {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href;
+          {navItems.map((item) => {
+            const active = isActive(item.href);
             const Icon = item.icon;
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={[
-                  styles.navItem,
-                  isActive ? styles.navItemActive : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
+                className={`${styles.navItem} ${active ? styles.navItemActive : ''}`}
               >
-                {Icon && <Icon size={16} className={styles.navIcon} />}
+                <Icon size={18} className={styles.navIcon} />
                 {item.label}
               </Link>
             );
           })}
+
+          {/* Dashboard Link - hanya untuk OWNER/ADMIN */}
+          {showDashboard && (
+            <Link
+              href="/dashboard"
+              className={`${styles.navItem} ${isActive('/dashboard') ? styles.navItemActive : ''}`}
+            >
+              <LayoutDashboard size={18} className={styles.navIcon} />
+              Dashboard
+            </Link>
+          )}
         </div>
 
-        {/* Right side */}
         <div className={styles.right}>
-          {MOCK_USER.isLoggedIn ? (
+          {loading ? (
             <div className={styles.userInfo}>
-              <Avatar name={MOCK_USER.name} size="sm" />
-              <div className={styles.userTexts}>
-                <span className={styles.userName}>{MOCK_USER.name}</span>
-                <span className={styles.userRole}>{MOCK_USER.role}</span>
+              <div className="h-8 w-8 animate-pulse rounded-full bg-gray-200" />
+              <div className="hidden sm:block">
+                <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
+                <div className="mt-1 h-3 w-12 animate-pulse rounded bg-gray-200" />
               </div>
             </div>
+          ) : user ? (
+            <div className={styles.userInfo}>
+              <Link href="/profile" className="flex items-center gap-3">
+                <Avatar name={user.name} size="sm" />
+                <div className={styles.userTexts}>
+                  <span className={styles.userName}>{user.name}</span>
+                  <span className={styles.userRole}>{user.role}</span>
+                </div>
+              </Link>
+              <LogoutButton />
+            </div>
           ) : (
-            <>
-              <div className={styles.divider} />
-              <Button variant="primary" size="sm">
-                Masuk / Login
-              </Button>
-            </>
+            <Link href="/login" className={styles.loginButton}>
+              Masuk
+            </Link>
           )}
         </div>
       </div>

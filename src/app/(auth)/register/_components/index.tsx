@@ -1,7 +1,11 @@
 'use client';
 
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
+import AuthTabs from '@/components/ui/AuthTabs';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 
@@ -10,55 +14,102 @@ import type { RegisterFormProps } from './RegisterForm.types';
 import { useRegister } from '../_hooks/useRegister';
 
 export default function RegisterForm({ className }: RegisterFormProps) {
+  const router = useRouter();
   const { isLoading, error, handleSubmit } = useRegister();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const wrapperClasses = [styles.wrapper, className].filter(Boolean).join(' ');
 
   return (
-    <div className={[styles.wrapper, className].filter(Boolean).join(' ')}>
+    <div className={wrapperClasses}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Buat Akun Baru</h1>
-        <p className={styles.subtitle}>
-          Daftar dan mulai jelajahi kuliner lokal terbaik
-        </p>
+        <h2 className={styles.welcome}>Buat akun baru</h2>
+        <p className={styles.subtitle}>Mulai jelajahi kuliner lokal terbaik</p>
       </div>
 
+      <AuthTabs />
+
       <form className={styles.form} onSubmit={handleSubmit}>
-        {error && <div className={styles.error}>{error}</div>}
+        {error && <div className={styles.errorMessage}>{error}</div>}
 
-        <Input
-          label="Nama Lengkap"
-          name="name"
-          type="text"
-          placeholder="Masukkan nama lengkap"
-          required
-          fullWidth
-        />
+        <div className={styles.fields}>
+          <Input
+            label="Nama Lengkap"
+            name="name"
+            type="text"
+            placeholder="Masukkan nama lengkap"
+            required
+            fullWidth
+            leftIcon={<User size={18} />}
+            autoComplete="name"
+            disabled={isLoading}
+          />
 
-        <Input
-          label="Email"
-          name="email"
-          type="email"
-          placeholder="email@example.com"
-          required
-          fullWidth
-        />
+          <Input
+            label="Alamat Email"
+            name="email"
+            type="email"
+            placeholder="name@example.com"
+            required
+            fullWidth
+            leftIcon={<Mail size={18} />}
+            autoComplete="email"
+            disabled={isLoading}
+          />
 
-        <Input
-          label="Password"
-          name="password"
-          type="password"
-          placeholder="Minimal 8 karakter"
-          required
-          fullWidth
-        />
+          <Input
+            label="Password"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Buat password (min. 6 karakter)"
+            required
+            fullWidth
+            leftIcon={<Lock size={18} />}
+            rightIcon={
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className={styles.passwordToggle}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            }
+            autoComplete="new-password"
+            disabled={isLoading}
+          />
 
-        <Input
-          label="Konfirmasi Password"
-          name="confirmPassword"
-          type="password"
-          placeholder="Ulangi password"
-          required
-          fullWidth
-        />
+          <Input
+            label="Konfirmasi Password"
+            name="confirmPassword"
+            type={showConfirmPassword ? 'text' : 'password'}
+            placeholder="Masukkan ulang password"
+            required
+            fullWidth
+            leftIcon={<Lock size={18} />}
+            rightIcon={
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className={styles.passwordToggle}
+                tabIndex={-1}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            }
+            autoComplete="new-password"
+            disabled={isLoading}
+          />
+        </div>
 
         <Button
           type="submit"
@@ -66,17 +117,18 @@ export default function RegisterForm({ className }: RegisterFormProps) {
           size="lg"
           fullWidth
           isLoading={isLoading}
+          disabled={isLoading}
         >
-          Daftar Sekarang
+          {isLoading ? 'Memproses...' : 'Daftar Sekarang'}
         </Button>
-      </form>
 
-      <p className={styles.footer}>
-        Sudah punya akun?{' '}
-        <Link href="/login" className={styles.link}>
-          Masuk di sini
-        </Link>
-      </p>
+        <p className={styles.loginLink}>
+          Sudah punya akun?{' '}
+          <Link href="/login" className={styles.link}>
+            Masuk sekarang
+          </Link>
+        </p>
+      </form>
     </div>
   );
 }

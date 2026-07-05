@@ -1,10 +1,14 @@
+import 'dotenv/config';
+import { PrismaPg } from '@prisma/adapter-pg';
+import type { Category } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('Seeding database...');
+  console.log('🌱 Seeding database...');
 
   // ===== CATEGORIES =====
   const categories = await Promise.all([
@@ -50,7 +54,7 @@ async function main() {
     }),
   ]);
 
-  console.log(`${categories.length} categories seeded`);
+  console.log(`✅ ${categories.length} categories seeded`);
 
   // ===== USERS =====
   const adminPassword = await bcrypt.hash('admin123', 12);
@@ -90,12 +94,14 @@ async function main() {
     },
   });
 
-  console.log(`Users seeded: ${admin.email}, ${owner.email}, ${user.email}`);
+  console.log(`✅ Users seeded: ${admin.email}, ${owner.email}, ${user.email}`);
 
   // ===== BUSINESSES =====
-  const padangCategory = categories.find((c) => c.slug === 'padang')!;
-  const cafeCategory = categories.find((c) => c.slug === 'cafe')!;
-  const seafoodCategory = categories.find((c) => c.slug === 'seafood')!;
+  const padangCategory = categories.find((c: Category) => c.slug === 'padang')!;
+  const cafeCategory = categories.find((c: Category) => c.slug === 'cafe')!;
+  const seafoodCategory = categories.find(
+    (c: Category) => c.slug === 'seafood'
+  )!;
 
   const business1 = await prisma.business.upsert({
     where: { id: 'business-1' },
@@ -160,7 +166,7 @@ async function main() {
     },
   });
 
-  console.log('Businesses seeded');
+  console.log('✅ Businesses seeded');
 
   // ===== MENUS =====
   await prisma.menu.createMany({
@@ -218,7 +224,7 @@ async function main() {
     ],
   });
 
-  console.log('Menus seeded');
+  console.log('✅ Menus seeded');
 
   // ===== REVIEWS =====
   await prisma.review.createMany({
@@ -245,13 +251,13 @@ async function main() {
     ],
   });
 
-  console.log('Reviews seeded');
-  console.log(' Seeding completed!');
+  console.log('✅ Reviews seeded');
+  console.log('🎉 Seeding completed!');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Error seeding:', e);
     process.exit(1);
   })
   .finally(async () => {

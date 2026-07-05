@@ -52,6 +52,7 @@ const eslintConfig = defineConfig([
       // Accessibility
       'jsx-a11y/alt-text': 'error',
       'jsx-a11y/anchor-is-valid': 'warn',
+      'react/no-unescaped-entities': 'off',
     },
   },
 ]);

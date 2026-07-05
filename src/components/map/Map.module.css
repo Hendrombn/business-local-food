@@ -1,0 +1,140 @@
+.mapWrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.mapContainer {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  border-radius: 0.5rem;
+}
+
+/* Loading skeleton */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  height: 100%;
+  width: 100%;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.loadingSpinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #d1fae5;
+  border-top-color: #16a34a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Popup override — Leaflet default popup styling */
+:global(.leaflet-popup-content-wrapper) {
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  padding: 0 !important;
+}
+
+:global(.leaflet-popup-content) {
+  margin: 0 !important;
+  width: auto !important;
+}
+
+:global(.leaflet-popup-tip-container) {
+  margin-top: -1px;
+}
+
+/* Popup inner content */
+.popupCard {
+  min-width: 160px;
+  padding: 0.75rem;
+}
+
+.popupName {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.25rem;
+}
+
+.popupAddress {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+}
+
+.popupBadge {
+  display: inline-block;
+  background-color: #dcfce7;
+  color: #15803d;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+}
+
+.popupButton {
+  display: block;
+  width: 100%;
+  padding: 0.35rem 0.75rem;
+  background-color: #16a34a;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.15s ease;
+}
+
+.popupButton:hover {
+  background-color: #15803d;
+}
+
+/* User location pulse marker */
+.userMarkerPulse {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.userMarkerPulse::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background-color: rgba(59, 130, 246, 0.25);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
