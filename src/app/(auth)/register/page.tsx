@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'Daftar akun Kuliner Lokal',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function RegisterPage() {
   const session = await getSession();
 
