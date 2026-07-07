@@ -1,11 +1,11 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useMemo } from 'react';
 
 import BusinessList from '@/components/business/BusinessList';
 import BusinessFilter from '@/components/business/BussinessFilter';
-import Map from '@/components/map/index';
 import { useDebounce } from '@/hooks/useDebounce';
 
 interface Category {
@@ -32,6 +32,15 @@ interface User {
   role: string;
 }
 
+const Map = dynamic(() => import('@/components/map'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-gray-100">
+      <p className="text-gray-500">Loading map...</p>
+    </div>
+  ),
+});
+
 export default function HomePage() {
   const router = useRouter();
   const [allBusinesses, setAllBusinesses] = useState<Business[]>([]);
@@ -41,7 +50,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
-  // ✅ Debounce search query (delay 300ms)
   const debouncedSearch = useDebounce(searchQuery, 300);
 
   // Fetch user
