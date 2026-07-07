@@ -1,0 +1,42 @@
+.card {
+  border-radius: var(--kl-radius-md);
+  border: 1px solid var(--kl-border);
+  background: #fff;
+  box-shadow: var(--kl-shadow-sm);
+  padding: 1.5rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--kl-ink-900);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.item {
+  position: relative;
+  height: 8rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--kl-radius-sm);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.item:hover .image {
+  transform: scale(1.05);
+}

@@ -1,5 +1,8 @@
-import { Users, Store, MessageSquare, Clock, EyeOff } from 'lucide-react';
+'use client';
 
+import { Users, Store, MessageSquare, Clock3, ShieldAlert } from 'lucide-react';
+
+import styles from './AdminStats.module.css';
 import type { Stats } from '../../_hooks/useAdmin';
 
 interface AdminStatsProps {
@@ -9,51 +12,59 @@ interface AdminStatsProps {
 export default function AdminStats({ stats }: AdminStatsProps) {
   const cards = [
     {
-      label: 'Total Users',
+      title: 'Total Users',
       value: stats.totalUsers,
       icon: Users,
-      color: 'text-blue-500',
+      variant: 'blue',
     },
     {
-      label: 'Total Bisnis',
+      title: 'Total Bisnis',
       value: stats.totalBusinesses,
       icon: Store,
-      color: 'text-green-500',
+      variant: 'green',
     },
     {
-      label: 'Total Ulasan',
+      title: 'Total Ulasan',
       value: stats.totalReviews,
       icon: MessageSquare,
-      color: 'text-purple-500',
+      variant: 'purple',
     },
     {
-      label: 'Pending Verifikasi',
+      title: 'Pending Verifikasi',
       value: stats.pendingBusinesses,
-      icon: Clock,
-      color: 'text-yellow-600',
-      bg: 'bg-yellow-50 border-yellow-200',
+      icon: Clock3,
+      variant: 'yellow',
     },
     {
-      label: 'Reported Ulasan',
+      title: 'Reported Ulasan',
       value: stats.reportedReviews,
-      icon: EyeOff,
-      color: 'text-red-600',
-      bg: 'bg-red-50 border-red-200',
+      icon: ShieldAlert,
+      variant: 'red',
     },
   ];
 
   return (
-    <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-5">
-      {cards.map((card, index) => (
-        <div
-          key={index}
-          className={`rounded-lg border border-gray-100 bg-white p-4 shadow-sm ${card.bg || ''}`}
-        >
-          <card.icon className={card.color} size={24} />
-          <p className="text-2xl font-bold">{card.value}</p>
-          <p className="text-sm text-gray-500">{card.label}</p>
-        </div>
-      ))}
-    </div>
+    <section className={styles.grid}>
+      {cards.map((card) => {
+        const Icon = card.icon;
+
+        return (
+          <article
+            key={card.title}
+            className={`${styles.card} ${styles[card.variant]}`}
+          >
+            <div className={styles.icon}>
+              <Icon size={24} />
+            </div>
+
+            <div className={styles.content}>
+              <span className={styles.value}>{card.value}</span>
+
+              <span className={styles.title}>{card.title}</span>
+            </div>
+          </article>
+        );
+      })}
+    </section>
   );
 }

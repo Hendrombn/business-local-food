@@ -1,0 +1,26 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.empty {
+  padding: 64px 24px;
+
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 40px;
+}
+
+.empty h3 {
+  margin-top: 16px;
+
+  font-size: 22px;
+}
+
+.empty p {
+  margin-top: 8px;
+
+  color: #6b7280;
+}

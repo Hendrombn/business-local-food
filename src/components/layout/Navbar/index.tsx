@@ -47,7 +47,10 @@ export default function Navbar({ onSearch }: NavbarProps) {
   };
 
   const handleSearch = (query: string) => {
-    console.log('Search:', query);
+    console.log('Navbar - Search:', query);
+    if (onSearch) {
+      onSearch(query);
+    }
   };
 
   // Tutup dropdown kalau klik di luar area

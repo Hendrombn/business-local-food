@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-interface Business {
+export interface Business {
   id: string;
   name: string;
   address: string;
@@ -12,7 +12,7 @@ interface Business {
   };
 }
 
-interface Favorite {
+export interface Favorite {
   id: string;
   businessId: string;
   business: Business;

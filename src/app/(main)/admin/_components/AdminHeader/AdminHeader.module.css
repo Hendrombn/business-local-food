@@ -1,0 +1,41 @@
+.header {
+  margin-bottom: 32px;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #ecfdf5;
+  color: #16a34a;
+
+  box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
+}
+
+.title {
+  margin: 0;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.subtitle {
+  margin-top: 6px;
+
+  color: #6b7280;
+  font-size: 15px;
+}

@@ -1,8 +1,9 @@
 'use client';
 
-import { MapPin, Phone, Globe, Navigation } from 'lucide-react';
+import { Globe, MapPin, Navigation, Phone } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+
+import styles from './ActionButtons.module.css';
 
 interface ActionButtonsProps {
   business: {
@@ -17,14 +18,6 @@ interface ActionButtonsProps {
 }
 
 export default function ActionButtons({ business }: ActionButtonsProps) {
-  // Debug: cek data business
-  useEffect(() => {
-    console.log('ActionButtons - business:', business);
-  }, [business]);
-
-  // Debug: cek apakah komponen di-render
-  console.log('ActionButtons rendered!');
-
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${business.lat},${business.lng}`;
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.lat},${business.lng}`;
 
@@ -34,59 +27,57 @@ export default function ActionButtons({ business }: ActionButtonsProps) {
 
   const telUrl = business.phone ? `tel:${business.phone}` : null;
 
+  const websiteUrl = business.website
+    ? business.website.startsWith('http')
+      ? business.website
+      : `https://${business.website}`
+    : null;
+
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      {/* Google Maps */}
+    <div className={styles.grid}>
       <Link
         href={mapsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 rounded-lg bg-blue-50 px-4 py-3 text-blue-700 transition-colors hover:bg-blue-100"
+        className={`${styles.action} ${styles.actionMaps}`}
       >
         <MapPin size={20} />
-        <span className="text-sm font-medium">Lihat di Maps</span>
+        <span className={styles.label}>Lihat di Maps</span>
       </Link>
 
-      {/* Navigasi */}
       <Link
         href={directionsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 rounded-lg bg-green-50 px-4 py-3 text-green-700 transition-colors hover:bg-green-100"
+        className={`${styles.action} ${styles.actionNavigate}`}
       >
         <Navigation size={20} />
-        <span className="text-sm font-medium">Navigasi</span>
+        <span className={styles.label}>Navigasi</span>
       </Link>
 
-      {/* Telepon/WhatsApp */}
       {telUrl && (
         <Link
           href={whatsappUrl || telUrl}
           target={whatsappUrl ? '_blank' : undefined}
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-lg bg-green-50 px-4 py-3 text-green-700 transition-colors hover:bg-green-100"
+          className={`${styles.action} ${styles.actionWhatsapp}`}
         >
           <Phone size={20} />
-          <span className="text-sm font-medium">
+          <span className={styles.label}>
             {whatsappUrl ? 'WhatsApp' : 'Telepon'}
           </span>
         </Link>
       )}
 
-      {/* Website */}
-      {business.website && (
+      {websiteUrl && (
         <Link
-          href={
-            business.website.startsWith('http')
-              ? business.website
-              : `https://${business.website}`
-          }
+          href={websiteUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-lg bg-purple-50 px-4 py-3 text-purple-700 transition-colors hover:bg-purple-100"
+          className={`${styles.action} ${styles.actionWebsite}`}
         >
           <Globe size={20} />
-          <span className="text-sm font-medium">Website</span>
+          <span className={styles.label}>Website</span>
         </Link>
       )}
     </div>

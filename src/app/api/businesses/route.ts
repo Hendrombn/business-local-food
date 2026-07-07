@@ -15,16 +15,20 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('categoryId');
     const search = searchParams.get('search');
-    const status = searchParams.get('status'); // ✅ Tambahkan ini
+    const status = searchParams.get('status');
 
-    // Build filter
+    // ✅ Debug log
+    console.log('🔍 API Request:', {
+      search,
+      categoryId,
+      status,
+    });
+
     const where: Prisma.BusinessWhereInput = {};
 
-    // Filter status (kalau ada)
     if (status) {
       where.status = status as any;
     } else {
-      // Default: hanya tampilkan yang ACTIVE (untuk user biasa)
       where.status = 'ACTIVE';
     }
 
@@ -32,11 +36,13 @@ export async function GET(request: Request) {
       where.categoryId = categoryId;
     }
 
-    if (search) {
+    if (search && search.trim() !== '') {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search.trim(), mode: 'insensitive' } },
+        { description: { contains: search.trim(), mode: 'insensitive' } },
+        { address: { contains: search.trim(), mode: 'insensitive' } },
       ];
+      console.log('Search applied:', search.trim());
     }
 
     const businesses = await prisma.business.findMany({
@@ -54,9 +60,11 @@ export async function GET(request: Request) {
       take: 50,
     });
 
+    console.log(' Businesses found:', businesses.length);
+
     return NextResponse.json(businesses);
   } catch (error) {
-    console.error('Fetch businesses error:', error);
+    console.error('❌ Fetch businesses error:', error);
     return NextResponse.json(
       { error: 'Terjadi kesalahan pada server' },
       { status: 500 }

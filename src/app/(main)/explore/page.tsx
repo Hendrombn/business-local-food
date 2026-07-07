@@ -3,9 +3,10 @@
 import { Search, MapPin, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import BusinessFilter from '@/components/business/BussinessFilter';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface Business {
   id: string;
@@ -30,6 +31,9 @@ export default function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
+  // ✅ Debounce search query
+  const debouncedSearch = useDebounce(searchQuery, 300);
+
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
@@ -46,7 +50,7 @@ export default function ExplorePage() {
     fetchCategories();
   }, []);
 
-  // Fetch businesses
+  // Fetch businesses dengan debounced search
   useEffect(() => {
     const fetchBusinesses = async () => {
       setLoading(true);
@@ -55,8 +59,8 @@ export default function ExplorePage() {
         if (selectedCategory) {
           url.searchParams.set('categoryId', selectedCategory);
         }
-        if (searchQuery.trim()) {
-          url.searchParams.set('search', searchQuery.trim());
+        if (debouncedSearch.trim()) {
+          url.searchParams.set('search', debouncedSearch.trim());
         }
 
         const res = await fetch(url.toString());
@@ -72,7 +76,7 @@ export default function ExplorePage() {
     };
 
     fetchBusinesses();
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, debouncedSearch]);
 
   const handleCategoryChange = (categoryId: string | null) => {
     setSelectedCategory(categoryId);

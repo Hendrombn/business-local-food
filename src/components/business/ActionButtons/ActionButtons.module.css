@@ -1,0 +1,80 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.action {
+  display: flex;
+  min-height: 3.25rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border-radius: var(--kl-radius-sm);
+  border: 1px solid transparent;
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.action:hover {
+  transform: translateY(-1px);
+}
+
+.action:active {
+  transform: translateY(0);
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.actionMaps {
+  background: #eaf1fd;
+  border-color: #d6e4fb;
+  color: #3163c9;
+}
+
+.actionMaps:hover {
+  background: #dde9fc;
+}
+
+.actionNavigate {
+  background: var(--kl-brand-50);
+  border-color: var(--kl-brand-100);
+  color: var(--kl-brand-700);
+}
+
+.actionNavigate:hover {
+  background: var(--kl-brand-100);
+}
+
+.actionWhatsapp {
+  background: #e7f9ee;
+  border-color: #cdf1dc;
+  color: #1a9e50;
+}
+
+.actionWhatsapp:hover {
+  background: #d9f5e6;
+}
+
+.actionWebsite {
+  background: #f2edfb;
+  border-color: #e4d8f7;
+  color: #7c3aed;
+}
+
+.actionWebsite:hover {
+  background: #ebe1f9;
+}
