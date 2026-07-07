@@ -1,22 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+import type { User } from '@/types/user';
 
 export function useSession() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchSession = async () => {
       try {
         const res = await fetch('/api/auth/session');
+
         if (res.ok) {
           const data = await res.json();
           setUser(data.user);
@@ -24,7 +22,7 @@ export function useSession() {
           setUser(null);
         }
       } catch (error) {
-        console.error('Fetch session error:', error);
+        console.error(error);
         setUser(null);
       } finally {
         setLoading(false);
@@ -34,5 +32,19 @@ export function useSession() {
     fetchSession();
   }, []);
 
-  return { user, loading };
+  const logout = async () => {
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+    });
+
+    setUser(null);
+    router.push('/login');
+    router.refresh();
+  };
+
+  return {
+    user,
+    loading,
+    logout,
+  };
 }

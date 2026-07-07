@@ -1,10 +1,30 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 import 'leaflet/dist/leaflet.css';
 import { defaultIcon } from '@/lib/leaflet-icon';
+
+// Import Leaflet components secara dynamic (client-side only)
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+
+const Marker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Marker),
+  { ssr: false }
+);
+
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+  ssr: false,
+});
 
 interface Business {
   id: string;
@@ -44,7 +64,7 @@ export default function Map({
           ]);
         },
         () => {
-          console.log('Geolocation not available, using default');
+          console.warn('Geolocation not available, using default');
         }
       );
     }
@@ -72,14 +92,12 @@ export default function Map({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {/* User location marker */}
       {userLocation && (
         <Marker position={userLocation} icon={defaultIcon}>
           <Popup>📍 Kamu di sini</Popup>
         </Marker>
       )}
 
-      {/* Business markers */}
       {businesses.map((business) => (
         <Marker
           key={business.id}

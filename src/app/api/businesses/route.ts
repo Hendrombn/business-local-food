@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-// GET - Sudah ada
+// GET - Ambil bisnis (dengan filter status)
 export async function GET(request: Request) {
   try {
     const session = await getSession();
@@ -15,10 +15,18 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('categoryId');
     const search = searchParams.get('search');
+    const status = searchParams.get('status'); // ✅ Tambahkan ini
 
-    const where: Prisma.BusinessWhereInput = {
-      status: 'ACTIVE',
-    };
+    // Build filter
+    const where: Prisma.BusinessWhereInput = {};
+
+    // Filter status (kalau ada)
+    if (status) {
+      where.status = status as any;
+    } else {
+      // Default: hanya tampilkan yang ACTIVE (untuk user biasa)
+      where.status = 'ACTIVE';
+    }
 
     if (categoryId) {
       where.categoryId = categoryId;
@@ -35,6 +43,13 @@ export async function GET(request: Request) {
       where,
       include: {
         category: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
       },
       take: 50,
     });
@@ -49,7 +64,7 @@ export async function GET(request: Request) {
   }
 }
 
-// POST - Tambah bisnis baru
+// POST - Tambah bisnis baru (tetap sama)
 export async function POST(request: Request) {
   try {
     const session = await getSession();
@@ -57,7 +72,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Cek role (hanya OWNER atau ADMIN)
     if (session.role !== 'OWNER' && session.role !== 'ADMIN') {
       return NextResponse.json(
         { error: 'Anda tidak memiliki akses' },
@@ -80,7 +94,6 @@ export async function POST(request: Request) {
       operatingDays,
     } = body;
 
-    // Validasi
     if (
       !name ||
       !categoryId ||

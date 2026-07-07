@@ -30,7 +30,7 @@
 }
 
 .logoIcon {
-  font-size: 24px;
+  color: #10b981;
 }
 
 .logoText {
@@ -40,17 +40,18 @@
   letter-spacing: -0.5px;
 }
 
+/* Search */
+.searchWrapper {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 16px;
+}
+
 /* Desktop Navigation */
 .nav {
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-@media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
 }
 
 .navItem {
@@ -98,8 +99,18 @@
   gap: 12px;
 }
 
-.userInfo a {
+.userLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.userLink:hover {
+  background: #f3f4f6;
 }
 
 .userTexts {
@@ -121,6 +132,11 @@
   letter-spacing: 0.3px;
 }
 
+.chevronIcon {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
 .loginButton {
   padding: 8px 20px;
   background: #10b981;
@@ -136,7 +152,64 @@
   background: #059669;
 }
 
+/* Skeleton loading */
+.skeletonAvatar {
+  height: 32px;
+  width: 32px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skeletonLineLg {
+  height: 14px;
+  width: 80px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonLineSm {
+  height: 10px;
+  width: 48px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Logout button di navbar */
+.right :global(.logout-btn) {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
 /* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .searchWrapper {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .inner {
     padding: 0 12px;
@@ -150,55 +223,114 @@
     display: none;
   }
 
+  .chevronIcon {
+    display: none;
+  }
+
   .loginButton {
     padding: 6px 14px;
     font-size: 13px;
   }
-}
 
-@media (max-width: 768px) {
-  .navbar {
-    display: none;
-  }
-}
-
-.searchWrapper {
-  flex: 1;
-  max-width: 400px;
-  margin: 0 16px;
-}
-
-@media (max-width: 768px) {
-  .searchWrapper {
-    display: none;
-  }
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.userInfo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.userInfo a {
-  text-decoration: none;
-}
-
-/* Logout button di navbar */
-.right :global(.logout-btn) {
-  padding: 4px 12px;
-  font-size: 12px;
-}
-
-@media (max-width: 640px) {
   .right :global(.logout-btn) {
     padding: 4px 8px;
     font-size: 11px;
   }
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.userTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.userTrigger:hover {
+  background: #f3f4f6;
+}
+
+.chevronIcon {
+  color: #9ca3af;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: dropdownIn 0.15s ease;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.dropdownItem:hover {
+  background: #f3f4f6;
+}
+
+.dropdownItemDanger {
+  color: #dc2626;
+}
+
+.dropdownItemDanger:hover {
+  background: #fee2e2;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: #e5e7eb;
+  margin: 0 8px;
+  flex-shrink: 0;
 }

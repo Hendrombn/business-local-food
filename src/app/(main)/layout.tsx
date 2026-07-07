@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 import BottomNav from '@/components/layout/BottomNav';
 import Navbar from '@/components/layout/Navbar';
 
@@ -6,17 +10,20 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // Trigger refetch di home page (via context atau window event)
+    window.dispatchEvent(new CustomEvent('search', { detail: { query } }));
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
-      {/* Navbar Desktop - hanya muncul di layar >= 768px */}
       <div className="hidden md:block">
-        <Navbar />
+        <Navbar onSearch={handleSearch} />
       </div>
-
-      {/* Main Content */}
       <main className="flex-1 pb-20 pt-16 md:pb-0">{children}</main>
-
-      {/* Bottom Navigation - hanya di mobile */}
       <BottomNav />
     </div>
   );

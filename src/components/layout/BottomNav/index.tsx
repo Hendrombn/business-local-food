@@ -1,6 +1,13 @@
 'use client';
 
-import { Home, Search, Heart, User, LayoutDashboard } from 'lucide-react';
+import {
+  Home,
+  Search,
+  Heart,
+  User,
+  LayoutDashboard,
+  Shield,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -14,6 +21,7 @@ export default function BottomNav() {
 
   const showDashboard =
     user && (user.role === 'OWNER' || user.role === 'ADMIN');
+  const showAdmin = user && user.role === 'ADMIN';
 
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
@@ -21,12 +29,20 @@ export default function BottomNav() {
     { href: '/saved', label: 'Saved', icon: Heart },
   ];
 
-  // Tambahkan dashboard di posisi ke-4 (sebelum Profile)
   if (showDashboard) {
     navItems.push({
       href: '/dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
+    });
+  }
+
+  // ✅ Link Admin - hanya untuk ADMIN
+  if (showAdmin) {
+    navItems.push({
+      href: '/admin',
+      label: 'Admin',
+      icon: Shield,
     });
   }
 

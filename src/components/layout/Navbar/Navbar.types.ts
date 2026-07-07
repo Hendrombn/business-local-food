@@ -8,4 +8,5 @@ export interface NavItem {
 
 export interface NavbarProps {
   activePath?: string;
+  onSearch?: (query: string) => void;
 }

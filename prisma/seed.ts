@@ -168,6 +168,29 @@ async function main() {
 
   console.log('✅ Businesses seeded');
 
+  // ===== BUSINESS PENDING (untuk testing admin verifikasi) =====
+  await prisma.business.upsert({
+    where: { id: 'business-pending-1' },
+    update: {},
+    create: {
+      id: 'business-pending-1',
+      userId: owner.id,
+      name: 'Bakso Sapi Pak Dedi',
+      categoryId: padangCategory.id,
+      address: 'Jl. Raya No. 99, Jakarta Pusat',
+      lat: -6.2088,
+      lng: 106.8456,
+      phone: '08123456789',
+      description: 'Bakso sapi dengan kuah segar dan pentol kenyal',
+      openTime: '08:00',
+      closeTime: '21:00',
+      operatingDays: 'Senin - Minggu',
+      status: 'PENDING',
+    },
+  });
+
+  console.log('✅ Pending business seeded');
+
   // ===== MENUS =====
   await prisma.menu.createMany({
     skipDuplicates: true,

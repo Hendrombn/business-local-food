@@ -1,9 +1,11 @@
+'use client';
+
 import L from 'leaflet';
 
 export const defaultIcon = L.icon({
-  iconUrl: '/images/marker-icon.png',
-  iconRetinaUrl: '/images/marker-icon-2x.png',
-  shadowUrl: '/images/marker-shadow.png',
+  iconUrl: '/icon/marker-icon.png',
+  iconRetinaUrl: '/icon/marker-icon-2x.png',
+  shadowUrl: '/icon/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],

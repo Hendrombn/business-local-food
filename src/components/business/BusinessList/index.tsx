@@ -1,4 +1,4 @@
-import { MapPin, Star } from 'lucide-react';
+import { MapPin, Star, LocateFixed, CircleDot } from 'lucide-react';
 import Link from 'next/link';
 
 import styles from './Business.module.css';
@@ -9,7 +9,10 @@ export default function BusinessList({ businesses }: BusinessListProps) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>📍 Bisnis Terdekat</h2>
+        <h2 className={styles.title}>
+          <LocateFixed size={20} className={styles.titleIcon} />
+          Bisnis Terdekat
+        </h2>
         <p className={styles.subtitle}>
           {businesses.length} bisnis ditemukan di sekitarmu
         </p>
@@ -35,16 +38,22 @@ export default function BusinessList({ businesses }: BusinessListProps) {
                   <span className={styles.address}>{business.address}</span>
                 </div>
               </div>
+
               <div className={styles.cardRight}>
                 <FavoriteButton businessId={business.id} size="sm" />
+
                 <span
-                  className={`${styles.status} ${business.isOpen ? styles.statusOpen : styles.statusClosed}`}
+                  className={`${styles.status} ${
+                    business.isOpen ? styles.statusOpen : styles.statusClosed
+                  }`}
                 >
-                  {business.isOpen ? '🟢 Buka' : '🔴 Tutup'}
+                  <CircleDot size={10} className={styles.statusIcon} />
+                  {business.isOpen ? 'Buka' : 'Tutup'}
                 </span>
+
                 {business.rating && (
                   <div className={styles.rating}>
-                    <Star size={14} fill="currentColor" />
+                    <Star size={14} className={styles.ratingIcon} />
                     <span>{business.rating}</span>
                   </div>
                 )}

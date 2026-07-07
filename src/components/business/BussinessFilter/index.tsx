@@ -3,6 +3,7 @@
 import { X } from 'lucide-react';
 
 import type { BusinessFilterProps } from './BusinessFilter.types';
+import styles from './businessFilter.module.css';
 
 export default function BusinessFilter({
   categories,
@@ -10,38 +11,34 @@ export default function BusinessFilter({
   onCategoryChange,
 }: BusinessFilterProps) {
   return (
-    <div className="mb-6">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-700">Filter Kategori</h3>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Filter Kategori</h3>
         {selectedCategory && (
           <button
             onClick={() => onCategoryChange(null)}
-            className="flex items-center gap-1 text-xs text-gray-400 transition-colors hover:text-gray-600"
+            className={styles.clearButton}
           >
             <X size={14} />
             Hapus Filter
           </button>
         )}
       </div>
-      <div className="flex flex-wrap gap-2">
+
+      <div className={styles.pillGroup}>
         <button
           onClick={() => onCategoryChange(null)}
-          className={`rounded-full px-3 py-1.5 text-sm transition-all duration-200 ${
-            !selectedCategory
-              ? 'bg-green-600 text-white shadow-sm'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
+          className={`${styles.pill} ${!selectedCategory ? styles.pillActive : ''}`}
         >
           Semua
         </button>
+
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => onCategoryChange(category.id)}
-            className={`rounded-full px-3 py-1.5 text-sm transition-all duration-200 ${
-              selectedCategory === category.id
-                ? 'bg-green-600 text-white shadow-sm'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            className={`${styles.pill} ${
+              selectedCategory === category.id ? styles.pillActive : ''
             }`}
           >
             {category.name}

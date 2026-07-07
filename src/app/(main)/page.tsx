@@ -1,37 +1,24 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import LogoutButton from '@/components/auth/index';
+// import LogoutButton from '@/components/auth/index';
 import BusinessList from '@/components/business/BusinessList';
 import BusinessFilter from '@/components/business/BussinessFilter';
-import SearchBar from '@/components/business/SeachBar';
-import Map from '@/components/map/index';
 
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
+import type { Business, Category, User } from './main.types';
+// import SearchBar from '@/components/business/SeachBar';
 
-interface Business {
-  id: string;
-  name: string;
-  address: string;
-  lat: number;
-  lng: number;
-  category: {
-    id: string;
-    name: string;
-  };
-  isOpen?: boolean;
-}
-
-interface User {
-  name: string;
-  role: string;
-}
+const Map = dynamic(() => import('@/components/map/index'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-gray-100">
+      <p className="text-gray-500">Loading map...</p>
+    </div>
+  ),
+});
 
 export default function HomePage() {
   const router = useRouter();
@@ -60,6 +47,19 @@ export default function HomePage() {
     fetchUser();
   }, [router]);
 
+  // Listen search event dari Navbar
+  useEffect(() => {
+    const handleSearchEvent = (e: CustomEvent) => {
+      const { query } = e.detail;
+      setSearchQuery(query);
+    };
+
+    window.addEventListener('search', handleSearchEvent as EventListener);
+    return () => {
+      window.removeEventListener('search', handleSearchEvent as EventListener);
+    };
+  }, []);
+
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
@@ -76,7 +76,7 @@ export default function HomePage() {
     fetchCategories();
   }, []);
 
-  // Fetch businesses
+  // Fetch businesses with filter & search
   useEffect(() => {
     const fetchBusinesses = async () => {
       setLoading(true);
@@ -108,25 +108,6 @@ export default function HomePage() {
     setSelectedCategory(categoryId);
   };
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  // Keyboard shortcut
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        const searchInput = document.querySelector(
-          'input[type="text"]'
-        ) as HTMLInputElement;
-        searchInput?.focus();
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
   if (!user) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -137,16 +118,12 @@ export default function HomePage() {
 
   return (
     <div className="flex h-screen flex-col">
-      {/* ❌ HAPUS HEADER INI */}
-
       {/* Main Content: Map + Sidebar */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Map - 65% */}
         <div className="relative flex-[2] bg-gray-100">
           <Map businesses={businesses} />
         </div>
 
-        {/* Sidebar - 35% */}
         <div className="flex-1 overflow-y-auto border-l border-gray-200 bg-white p-4">
           <BusinessFilter
             categories={categories}

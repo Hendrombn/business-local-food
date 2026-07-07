@@ -88,6 +88,7 @@ model Review {
   user       User         @relation(fields: [userId], references: [id])
   rating     Int
   comment    String?
+  reply      String? 
   status     ReviewStatus @default(ACTIVE)
   createdAt  DateTime     @default(now())
 }
