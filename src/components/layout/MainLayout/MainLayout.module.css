@@ -1,0 +1,29 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  padding-top: 64px; /* Navbar height */
+}
+
+.content {
+  flex: 1;
+  padding: 24px 0;
+  padding-bottom: 80px; /* Space for bottom bar on mobile */
+}
+
+@media (min-width: 769px) {
+  .content {
+    padding-bottom: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 56px; /* Smaller navbar on mobile */
+  }
+}

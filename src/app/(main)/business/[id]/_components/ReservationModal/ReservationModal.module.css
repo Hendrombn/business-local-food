@@ -1,0 +1,158 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 61, 46, 0.35);
+  padding: 1rem;
+}
+
+.modal {
+  width: 100%;
+  max-width: 26rem;
+  border-radius: var(--kl-radius-md);
+  background: #fff;
+  padding: 1.5rem;
+  box-shadow: var(--kl-shadow-md);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--kl-ink-900);
+}
+
+.subtitle {
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  color: var(--kl-ink-400);
+}
+
+.closeIcon {
+  color: var(--kl-ink-400);
+  transition: color 0.15s ease;
+}
+
+.closeIcon:hover {
+  color: var(--kl-ink-900);
+}
+
+.form {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--kl-ink-900);
+}
+
+.input,
+.textarea {
+  border-radius: var(--kl-radius-sm);
+  border: 1px solid var(--kl-border);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--kl-ink-900);
+  transition: border-color 0.15s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--kl-brand-500);
+}
+
+.textarea {
+  resize: none;
+}
+
+.actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cancelButton,
+.submitButton {
+  flex: 1;
+  border-radius: var(--kl-radius-sm);
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.cancelButton {
+  background: var(--kl-surface);
+  color: var(--kl-ink-600);
+}
+
+.cancelButton:hover {
+  background: var(--kl-border);
+}
+
+.submitButton {
+  background: var(--kl-orange-600);
+  color: #fff;
+}
+
+.submitButton:hover {
+  background: var(--kl-orange-700);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.successState {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.successTitle {
+  font-weight: 700;
+  color: var(--kl-brand-700);
+}
+
+.successText {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--kl-ink-600);
+}
+
+.doneButton {
+  margin-top: 1.25rem;
+  width: 100%;
+  border-radius: var(--kl-radius-sm);
+  background: var(--kl-brand-600);
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.doneButton:hover {
+  background: var(--kl-brand-700);
+}

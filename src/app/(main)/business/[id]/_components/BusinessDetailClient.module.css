@@ -1,0 +1,118 @@
+/* Design tokens — didefinisikan sekali di sini, dipakai di semua module.css lain */
+:root {
+  --kl-brand-900: #0b3d2e;
+  --kl-brand-800: #0e5237;
+  --kl-brand-700: #106b47;
+  --kl-brand-600: #15803d;
+  --kl-brand-500: #22a35d;
+  --kl-brand-100: #dcf5e7;
+  --kl-brand-50: #f2faf6;
+
+  --kl-amber-500: #f5a623;
+  --kl-orange-600: #ea580c;
+  --kl-orange-700: #c2410c;
+  --kl-red-500: #ef4444;
+
+  --kl-ink-900: #16241c;
+  --kl-ink-600: #4b5f54;
+  --kl-ink-400: #8a998f;
+
+  --kl-surface: #f7faf8;
+  --kl-border: #e6ece8;
+
+  --kl-radius-lg: 20px;
+  --kl-radius-md: 14px;
+  --kl-radius-sm: 10px;
+  --kl-shadow-sm: 0 1px 2px rgba(15, 61, 46, 0.06);
+  --kl-shadow-md: 0 8px 24px rgba(15, 61, 46, 0.08);
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--kl-surface);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--kl-border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 1rem 1.5rem;
+}
+
+.backLink {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--kl-brand-600);
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.backLink:hover {
+  color: var(--kl-brand-700);
+}
+
+.main {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.layout {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+}
+
+.sidebarCol {
+  order: 2;
+}
+
+.contentCol {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .sidebarCol {
+    order: 1;
+  }
+  .contentCol {
+    order: 2;
+  }
+}
+
+.card {
+  border-radius: var(--kl-radius-md);
+  border: 1px solid var(--kl-border);
+  background: #fff;
+  box-shadow: var(--kl-shadow-sm);
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--kl-ink-900);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.description {
+  color: var(--kl-ink-600);
+  line-height: 1.6;
+}

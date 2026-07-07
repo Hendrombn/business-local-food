@@ -1,0 +1,79 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.container {
+  width: 100%;
+
+  margin: 0 auto;
+  padding: 20px 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backButton {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.backButton:hover {
+  background: #f3f4f6;
+}
+
+.backButton:active {
+  transform: scale(0.95);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  color: #ef4444;
+}
+
+.title {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.subtitle {
+  margin-top: 4px;
+
+  color: #6b7280;
+
+  font-size: 15px;
+}

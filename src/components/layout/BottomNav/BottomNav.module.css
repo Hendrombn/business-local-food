@@ -1,0 +1,95 @@
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    display: block;
+  }
+}
+
+/* Sembunyikan di desktop */
+@media (min-width: 769px) {
+  .bottomNav {
+    display: none !important;
+  }
+}
+.container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 6px 0 env(safe-area-inset-bottom, 6px) 0;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 12px;
+  min-width: 56px;
+  flex: 1;
+  text-decoration: none;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.navItem:hover {
+  color: #4b5563;
+}
+
+.navItem.active {
+  color: #10b981;
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activeDot {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+
+/* Active state for label */
+.active .label {
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Touch feedback */
+.navItem:active {
+  transform: scale(0.95);
+}

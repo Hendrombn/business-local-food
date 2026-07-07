@@ -1,0 +1,67 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.emptyState {
+  padding: 64px 24px;
+
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 80px;
+  height: 80px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background: #ecfdf5;
+  color: #16a34a;
+}
+
+.emptyTitle {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.emptyDescription {
+  max-width: 420px;
+
+  margin: 12px auto 28px;
+
+  line-height: 1.7;
+
+  color: #6b7280;
+}
+
+.emptyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 24px;
+
+  border-radius: 12px;
+
+  background: #16a34a;
+
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+
+  transition: 0.25s;
+}
+
+.emptyButton:hover {
+  background: #15803d;
+}
