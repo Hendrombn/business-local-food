@@ -2,7 +2,6 @@
 
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import AuthTabs from '@/components/ui/AuthTabs';
@@ -14,8 +13,17 @@ import type { RegisterFormProps } from './RegisterForm.types';
 import { useRegister } from '../_hooks/useRegister';
 
 export default function RegisterForm({ className }: RegisterFormProps) {
-  const router = useRouter();
-  const { isLoading, error, handleSubmit } = useRegister();
+  const {
+    name,
+    email,
+    password,
+    confirmPassword,
+    error,
+    isLoading,
+    handleChange,
+    handleSubmit,
+  } = useRegister();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -50,6 +58,8 @@ export default function RegisterForm({ className }: RegisterFormProps) {
             required
             fullWidth
             leftIcon={<User size={18} />}
+            value={name}
+            onChange={handleChange}
             autoComplete="name"
             disabled={isLoading}
           />
@@ -62,6 +72,8 @@ export default function RegisterForm({ className }: RegisterFormProps) {
             required
             fullWidth
             leftIcon={<Mail size={18} />}
+            value={email}
+            onChange={handleChange}
             autoComplete="email"
             disabled={isLoading}
           />
@@ -74,6 +86,8 @@ export default function RegisterForm({ className }: RegisterFormProps) {
             required
             fullWidth
             leftIcon={<Lock size={18} />}
+            value={password}
+            onChange={handleChange}
             rightIcon={
               <button
                 type="button"
@@ -96,6 +110,8 @@ export default function RegisterForm({ className }: RegisterFormProps) {
             required
             fullWidth
             leftIcon={<Lock size={18} />}
+            value={confirmPassword}
+            onChange={handleChange}
             rightIcon={
               <button
                 type="button"
