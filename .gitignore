@@ -41,4 +41,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Database backup
+*.sql
+*.db
+*.sqlite
+backup.sql
+
 /src/generated/prisma

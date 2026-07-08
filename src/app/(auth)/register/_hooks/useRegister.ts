@@ -1,58 +1,80 @@
 'use client';
 
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export function useRegister() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'name') setName(value);
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
+    if (name === 'confirmPassword') setConfirmPassword(value);
+    setError('');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setIsLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const confirmPassword = formData.get('confirmPassword') as string;
+    // Validasi
+    if (!name || !email || !password || !confirmPassword) {
+      setError('Semua field wajib diisi');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password minimal 6 karakter');
+      return;
+    }
 
     if (password !== confirmPassword) {
-      setError('Password dan konfirmasi password tidak sama');
-      setIsLoading(false);
+      setError('Password tidak cocok');
       return;
     }
 
-    if (password.length < 8) {
-      setError('Password minimal 8 karakter');
-      setIsLoading(false);
-      return;
-    }
+    setIsLoading(true);
 
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+      const response = await axios.post('/api/auth/register', {
+        name,
+        email,
+        password,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message ?? 'Terjadi kesalahan, coba lagi');
-        return;
+      if (response.data.success) {
+        // Redirect ke login
+        router.push('/login?registered=true');
       }
-
-      // Redirect ke login setelah register berhasil
-      router.push('/login?registered=true');
-    } catch {
-      setError('Terjadi kesalahan, coba lagi');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Terjadi kesalahan, coba lagi');
+      }
+      console.error('Register error:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { isLoading, error, handleSubmit };
+  return {
+    name,
+    email,
+    password,
+    confirmPassword,
+    error,
+    isLoading,
+    handleChange,
+    handleSubmit,
+  };
 }
